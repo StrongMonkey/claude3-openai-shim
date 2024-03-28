@@ -14,6 +14,10 @@ async def log_body(request: Request, call_next):
     print("HTTP REQUEST BODY: ", body)
     return await call_next(request)
 
+@app.on_event("startup")
+async def startup_event():
+    if ANTHROPIC_API_KEY not in os.environ:
+        system.exit("ANTHROPIC_API_KEY environment variable not set")
 
 @app.post("/")
 async def post_root():
